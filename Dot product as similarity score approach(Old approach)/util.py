@@ -21,37 +21,30 @@ def create_output_path(csv_filepath):
     if not os.path.exists('result'):
         os.mkdir('result')
     filepath = csv_filepath.split('/')[-1]
-    filepath = 'result/'+filepath.split('_')[-1].split(".")[-2][1:]
+    filepath = 'result/Simulator_v4_%s' % filepath.split('.')[-2]
     if os.path.exists(filepath):
         os.remove(filepath)
     return filepath
 
-def readEmb_csv_json(filepath,emb_size,file_type):
+def readEmb_csv(filepath):
     # Read labels
-    if file_type=='json':
-        import json
-        with open(filepath) as json_file:
-            data = json.load(json_file)
-            label_array=[i.split('/')[-2] for i in data['paths']]
-            emb_array=np.array(data['embedding'])
-    else :
-        with open(filepath, 'r') as textfile:
-            reader =  csv.DictReader(textfile, ["names", "features", "thresholds", "filepaths"])
-            all_data = [[row["names"], row["features"]] for row in reader]
+    with open(filepath, 'r') as textfile:
+        reader =  csv.DictReader(textfile, ["names", "features", "thresholds", "filepaths"])
+        all_data = [[row["names"], row["features"]] for row in reader]
 
-        # Transfer data
-        embeddings = []
-        label_array = []
-        for data in all_data:
-            tmp = data[1].replace('[', '')
-            tmp = tmp.replace(']', '')
-            tmp = tmp.replace('\n', '')
-            embeddings.append(tmp)
-            label_array.append(data[0])
+    # Transfer data
+    embeddings = []
+    label_array = []
+    for data in all_data:
+        tmp = data[1].replace('[', '')
+        tmp = tmp.replace(']', '')
+        tmp = tmp.replace('\n', '')
+        embeddings.append(tmp)
+        label_array.append(data[0])
 
-        emb_array = np.zeros((len(embeddings), emb_size), dtype=float)
-        for indx, emb in enumerate(embeddings):
-            emb_array[indx, :] = np.fromstring(emb, dtype=np.float32, sep=" ")
+    emb_array = np.zeros((len(embeddings), 128), dtype=float)
+    for indx, emb in enumerate(embeddings):
+        emb_array[indx, :] = np.fromstring(emb, dtype=np.float32, sep=" ")
     return emb_array, label_array
 
 
