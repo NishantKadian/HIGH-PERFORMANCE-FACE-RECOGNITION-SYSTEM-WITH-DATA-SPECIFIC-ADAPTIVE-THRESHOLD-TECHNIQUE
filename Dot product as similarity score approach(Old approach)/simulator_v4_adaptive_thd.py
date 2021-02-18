@@ -72,7 +72,7 @@ def main(args):
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('csv_dir', type=str, help='the csv filepath with features')
-    parser.add_argument('--max_compare_num', type=int, default=100,
+    parser.add_argument('--max_compare_num', type=int, default=0,
         help='the max number of comparison within the database')
     return parser.parse_args(argv)
 
