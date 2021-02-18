@@ -83,12 +83,12 @@ class Database():
                 # Update self
                 if new_thd > max_thd:
                     max_thd = new_thd
-        if max_thd > -1:
+        if max_thd > float('-inf'):
             self.thresholds[self.indices] = max_thd
 
     def get_most_similar(self, embTest):
         testTiles = np.tile(embTest, (self.indices, 1))
-        similarities = np.sum(testTiles*self.embs[0:self.indices], axis=1)
+        similarities = -np.sqrt(np.sum(np.square(testTiles-self.embs[0:self.indices]), axis=1))
         max_similarity = np.max(similarities)
         max_id = np.argmax(similarities)
         return max_id, max_similarity
@@ -115,5 +115,5 @@ class Database():
         return np.mean(self.thresholds)
 
 def get_similarity(embA, embB):
-    ans = np.sum(embA*embB)
+    ans = -np.sqrt(np.sum(np.square((embA-embB))))
     return ans
