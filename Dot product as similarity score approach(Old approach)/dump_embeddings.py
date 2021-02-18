@@ -168,7 +168,7 @@ def parse_arguments(argv):
     parser.add_argument('--csv_filename', type=str, help='filename of output csv file')
     parser.add_argument('--batch_size', type=int, default=100)
     parser.add_argument('--image_size', type=int, default=160)
-    parser.add_argument('--image_ext', type=str, default='png')
+    parser.add_argument('--image_ext', type=str, default='jpg')
 
     parser.add_argument('--gpu_memory_fraction', type=float, default=0.8)
     parser.add_argument('--gpu', type=int, default=0)
